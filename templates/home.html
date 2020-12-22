@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" href = {% static 'css/home.css' %}>
+{% endblock styles %}
+
+{% block content %} 
+{% if all_items%}
+
+<div class="item-container">
+  {% for item in all_items %}
+  <div class="item-box">
+  <div class="price-name">
+    <h2 class="item-name">{{ item.name }}</h2>
+    <h4 class="item-price">{{item.price}}</h4>
+  </div>
+    <img class = "item-image" src="{{item.get_image}}" alt={{item.name}} />
+    <p class="item-desc">{{item.description}}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<p>No items are available.</p>
+{% endif %}
+ {% endblock content %}
+

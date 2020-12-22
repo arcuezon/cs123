@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <title>Shop</title>
+    <link rel="icon" type="img/png" href="{% static '/img/cart.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css'%}" />
+    {% block styles %} {% endblock styles %}
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <div class="head-logo">
+          <a href = "/" class="company-link"><h1 class="company">Shop</h1></a>
+        </div>
+        <div class="nav">
+          <ul class="links">
+            <li><a href ="/profile" class = "links-anchor">
+            {% if user.is_authenticated %}
+            Hello, {{user.username}}
+            {% else %}
+            Login
+            {% endif %}
+            </a></li>
+            
+            <li><a href ="/" class = "links-anchor">Shop</a></li>
+
+            <li><a href ="/about-us" class = "links-anchor">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="content-wrap">{% block content %} {% endblock %}</div>
+    </div>
+    <div class="footer">
+      <p>Contact us:</p>
+      <div class="foot-cont">
+        <img src="{% static '/img/fb_logo.png'%}" alt="Facebook Page" />
+        <p class="social-1"></p>
+      </div>
+      <div class="foot-cont">
+        <img src="{% static '/img/mail.png'%}" alt="Email Address" />
+        <p class="social-2"></p>
+      </div>
+      <div class="foot-cont">
+        <img src="" alt="" />
+        <p class="social-3"></p>
+      </div>
+    </div>
+  </body>
+</html>

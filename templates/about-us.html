@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/about-us.css'%}" />
+{% endblock styles %}
+
+{% block content %}
+<p class="about-p">This is a website created for CS123: Introduction to
+    Software Engineering.</p>
+<ul class="members">
+<li class="members-title">Members:</li>
+<li>Alfonso Cuezon</li>
+<li>Anton Magdato</li>
+<li>Hurjay Medilo</li>
+<li>RC Rosario</li>
+<li>Joshua Son</li>
+</ul>
+{% endblock content %}
