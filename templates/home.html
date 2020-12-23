@@ -8,6 +8,7 @@
 {% if all_items%}
 
 <div class="item-container">
+{% comment %} For loop to iterate through all the items in all_items {% endcomment %}
   {% for item in all_items %}
   <div class="item-box">
   <div class="price-name">
@@ -19,9 +20,12 @@
   </div>
   {% endfor %}
 </div>
-
+{% comment %} In case backend fails, display error. {% endcomment %}
 {% else %}
-<p>No items are available.</p>
+<p>No items are available. Contact admin.</p>
 {% endif %}
  {% endblock content %}
+
+
+
 
