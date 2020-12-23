@@ -8,11 +8,7 @@
   <form method="post" class="login-form">
     {% csrf_token %}
     {{ form.as_p }}
-    {% comment %} <label for="email">E-mail:</label>
-    <input type="text" id="email" name="email" /><br /><br />
-    <label for="passwd">Last name:</label>
-    <input type="password" id="passwd" name="passwd" /><br /><br />
-    <input type="submit" value="Submit" id="submit-btn" /> {% endcomment %}
+
     <button type="submit" id="submit-btn">Log In</button>
   </form>
   <a href="/signup" class="sign-up">Sign-up</a>

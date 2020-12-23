@@ -18,10 +18,10 @@ from django.urls import path, include
 from pages.views import home_view, profile_view, index, about_view, signup
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index, name='home'),
-    path('accounts/',  include('django.contrib.auth.urls')),
-    path('profile/', profile_view, name='profile'),
-    path('about-us/', about_view, name='about us'),
-    path('signup/', signup, name='signup'),
+    path('admin/', admin.site.urls), #default admin site
+    path('', index, name='home'), #splash page/index, main shop page
+    path('accounts/',  include('django.contrib.auth.urls')), #for login
+    path('profile/', profile_view, name='profile'), #account information
+    path('about-us/', about_view, name='about us'), #about us page for the website
+    path('signup/', signup, name='signup'), #user signup page
 ]

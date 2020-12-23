@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'pages',
+    #Own applications
+    'pages', #app for the views and models
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'myapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'], #Templates where HTML files are located
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,11 +122,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#Where static files are saved
 STATICFILES_DIRS = [
     BASE_DIR/'static',
 ]
 
-STATIC_ROOT = BASE_DIR/'static_root'
+STATIC_ROOT = BASE_DIR/'static_root' #probably not needed
+
+#Redirect after successful login and logout
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

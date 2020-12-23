@@ -8,9 +8,12 @@
   <!--<![endif]-->
   <head>
     <title>Shop</title>
+    {% comment %}----------------- HEADER----------------- {% endcomment %}
     <link rel="icon" type="img/png" href="{% static '/img/cart.png' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css'%}" />
-    {% block styles %} {% endblock styles %}
+    {% block styles %}
+    {% comment %}---------- Content styles go here ----------- {% endcomment %}
+     {% endblock styles %}
   </head>
   <body>
     <div class="wrapper">
@@ -34,8 +37,11 @@
           </ul>
         </div>
       </div>
-      <div class="content-wrap">{% block content %} {% endblock %}</div>
+      <div class="content-wrap">{% block content %}
+      {% comment %}---------- Content will go here ------------ {% endcomment %} 
+      {% endblock %}</div>
     </div>
+    {% comment %}----------------- FOOTER----------------- {% endcomment %}
     <div class="footer">
       <p>Contact us:</p>
       <div class="foot-cont">
