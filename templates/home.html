@@ -1,31 +1,55 @@
-{% extends 'base.html' %} {% load static %} 
+{% extends 'base.html' %} 
+{% load static %} 
+{% block styles %} 
+<link rel="stylesheet" href = {% static 'css/home.css' %}> 
+{% endblock styles %} 
 
-{% block styles %}
-<link rel="stylesheet" href = {% static 'css/home.css' %}>
-{% endblock styles %}
+{%block content %} 
 
-{% block content %} 
 {% if all_items%}
 
+<div class="filter-box">
+  <form action="/" method="get">
+    <label for="filter" class="filter-label">Sort:</label>
+    <select name="filter" id="filter">
+      <option value="name">Alphabetical: Increasing</option>
+      <option value="-name">Alphabetical: Decreasing</option>
+      <option value="-price">Price: High-Low</option>
+      <option value="price">Price: Low-High</option>
+    </select>
+    <input type="submit" value="ok">
+  </form>
+</div>
 <div class="item-container">
-{% comment %} For loop to iterate through all the items in all_items {% endcomment %}
+
+  {% comment %} For loop to iterate through all the items in all_items {%endcomment %} 
   {% for item in all_items %}
+
   <div class="item-box">
-  <div class="price-name">
-    <h2 class="item-name">{{ item.name }}</h2>
-    <h4 class="item-price">{{item.price}}</h4>
+
+    <div class="price-name">
+      <h2 class="item-name">{{ item.name }}</h2>
+      <h4 class="item-price">{{ item.price }}</h4>
+    </div>
+
+    <img class="item-image" src="{{ item.get_image }}" alt="{{ item.name }}" />
+    <p class="item-desc">{{ item.description }}</p>
+
+    <div class="add-cart">
+      <form action="/add-to-cart{{item.name}}" method="get">
+        <input type="submit" value="Add to cart">
+      </form>
+    </div>
+
   </div>
-    <img class = "item-image" src="{{item.get_image}}" alt={{item.name}} />
-    <p class="item-desc">{{item.description}}</p>
-  </div>
+
   {% endfor %}
 </div>
-{% comment %} In case backend fails, display error. {% endcomment %}
+
+{% comment %} In case backend fails, display error. {% endcomment %} 
+
 {% else %}
 <p>No items are available. Contact admin.</p>
-{% endif %}
- {% endblock content %}
+{% endif %} 
 
-
-
-
+{% endblock content %}
