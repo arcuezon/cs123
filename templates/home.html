@@ -36,7 +36,10 @@
     <p class="item-desc">{{ item.description }}</p>
 
     <div class="add-cart">
-      <form action="/add-to-cart{{item.name}}" method="get">
+      <form action="/add-to-cart" method="get">
+      <select name = "item" id ="item">
+        <option value="{{item.id}}"></option>
+      </select>
         <input type="submit" value="Add to cart">
       </form>
     </div>

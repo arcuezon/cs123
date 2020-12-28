@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+{% endblock styles %}
+
+{% block content %}
+{% for item in cart %}
+<p>{{ item.name }}</p>
+<img src="{{ item.get_image }}" alt="">
+{% endfor %}
+{% endblock content %}

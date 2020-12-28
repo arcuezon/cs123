@@ -6,10 +6,12 @@ from django.utils import timezone
 
 # Create your models here.
 
+'''
+Shopping cart that stores the users items
+'''
 class Cart(models.Model):
     customer = models.ForeignKey('Profile', on_delete=models.CASCADE)
     ordered_items = models.ManyToManyField('Item')
-    address = models.TextField()
     created_date = models.DateTimeField(default = timezone.now)
 
     def __str__(self):
@@ -52,22 +54,16 @@ class Item(models.Model):
     def get_image(self):
         return f'/static/items/{self.picture}'
 
-
-class Address(models.Model):
+'''
+Extends the base user model and allows adding of address and cart
+'''
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     address_line_1 = models.CharField(max_length=50, blank=True)
     address_line_2 = models.CharField(max_length=50, blank=True)
     city = models.CharField(max_length=10, blank=True)
     country = models.CharField(max_length = 15, blank=True)
     zip_code = models.CharField(max_length=8, blank=True)
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    addresses = models.ManyToManyField(
-         'Address', 
-         through='AddressInfo',
-         through_fields=('profile', 'address')
-    )
     birth_date = models.DateField(null=True, blank=True)
 
     @receiver(post_save, sender=User)
@@ -82,20 +78,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-
-class AddressInfo(models.Model):
-
-    HOME_ADDRESS = 1
-    SHIPPING_ADDRESS = 2
-
-    TYPE_ADDRESS_CHOICES = (
-        (HOME_ADDRESS, "Home address"),
-        (SHIPPING_ADDRESS, "Shipping address"),
-    )
-
-    address = models.ForeignKey('Address', on_delete=models.CASCADE)
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-
-    # This is the field you would use for know the type of address.
-    address_type = models.PositiveIntegerField(choices=TYPE_ADDRESS_CHOICES)

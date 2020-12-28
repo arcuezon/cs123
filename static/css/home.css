@@ -61,6 +61,10 @@
   margin-left: 80%;
 }
 
+#item{
+  display: none;
+}
+
 @media (max-width: 1800px) {
   .item-box {
     width: 47%;
