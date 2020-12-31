@@ -5,8 +5,13 @@
 {% endblock styles %}
 
 {% block content %}
-{% for item in cart %}
+{% if cart %}
+{% for item, number in cart %}
 <p>{{ item.name }}</p>
 <img src="{{ item.get_image }}" alt="">
+<p>Quantity: {{ number }}
 {% endfor %}
+{% else %}
+<p>No items in cart</p>
+{% endif %}
 {% endblock content %}
