@@ -6,9 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from myapp.forms import SignUpForm
 import operator
-from .models import Cart, Profile
-
-from .models import Item, Profile
+from .models import Cart, Profile, Item
 
 #Home page (replaced by index)
 def home_view(request, *args, **kwargs):
@@ -72,7 +70,6 @@ def add_cart(request):
         print('Request made.')
         item_id = request.GET['item']
         cart, _ = Cart.objects.get_or_create(customer=request.user.profile)
-        print(cart)
         cart.add_item(item_id)
 
     else:

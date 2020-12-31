@@ -111,5 +111,4 @@ class OrderQuantity(models.Model):
 
     def increment(self):
         self.quantity += 1
-        print('Increment', self.quantity)
         self.save()
