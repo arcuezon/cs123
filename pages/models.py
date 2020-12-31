@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 # Create your models here.
+#python manage.py graph_models -a > my_project.dot
 
 '''
 Shopping cart that stores the users items
@@ -12,10 +13,32 @@ Shopping cart that stores the users items
 class Cart(models.Model):
     customer = models.ForeignKey('Profile', on_delete=models.CASCADE)
     ordered_items = models.ManyToManyField('Item')
+    item_quantity = models.ManyToManyField('OrderQuantity')
     created_date = models.DateTimeField(default = timezone.now)
 
     def __str__(self):
         return self.customer.user.username
+
+    def add_item(self, item_id):
+        #self.ordered_items.get_or_create()
+        item = Item.objects.get(id=item_id)
+        if not self.ordered_items.filter(id=item_id).exists():
+            self.ordered_items.add(item)
+            
+        if not self.item_quantity.filter(product=item).exists():
+            order_quantity = OrderQuantity.objects.create(product=item)
+            order_quantity.quantity += 1
+            self.item_quantity.add(order_quantity)
+        else:
+            order_quantity = self.item_quantity.get(product=item)
+            order_quantity.increment()
+            print(order_quantity.quantity)
+            #order_quantity.save()
+            
+        
+    def remove_item(self, item_id):
+        item = Item.objects.get(id=item_id)
+        self.ordered_items.remove(item)
 
 
 
@@ -78,3 +101,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class OrderQuantity(models.Model):
+    product = models.ForeignKey('Item', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def get_quantity(self):
+        return self.quantity
+
+    def increment(self):
+        self.quantity += 1
+        print('Increment', self.quantity)
+        self.save()

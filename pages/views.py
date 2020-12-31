@@ -71,34 +71,37 @@ def add_cart(request):
     if request.method == 'GET' and 'item' in request.GET:
         print('Request made.')
         item_id = request.GET['item']
-        if not Cart.objects.filter(customer=request.user.profile).exists():
-            cart = Cart.objects.create(customer = request.user.profile)
-        cart = Cart.objects.get(customer=request.user.profile)
-        item_cart = Item.objects.get(id=item_id)
-        cart.ordered_items.add(item_cart)
-        cart_items = cart.ordered_items.all()
+        cart, _ = Cart.objects.get_or_create(customer=request.user.profile)
+        print(cart)
+        cart.add_item(item_id)
 
     else:
         #Todo: If item-id doesn't exist
         pass
 
-    context = {
-        'cart': cart_items,
-        'title': 'Shop'
-    }
-
-    return render(request, "cart.html", context)
+    return cart_view(request)
 
 @login_required(login_url='/accounts/login/')
-def cart(request):
-    cart = Cart.objects.get(customer=request.user.profile)
-    cart_items = cart.ordered_items.all()
+def cart_view(request):
+    if Cart.objects.filter(customer=request.user.profile).exists():
+        cart = Cart.objects.get(customer=request.user.profile)
+        cart_items = cart.ordered_items.all()
 
-    print(cart_items)
+        quantity = []
+        for cart_item in cart_items:
+            quantity.append(cart.item_quantity.get(product = cart_item).quantity)
+        
+        cart_quantity = zip(cart_items, quantity)
 
-    context = {
-        'cart': cart_items,
-        'title': 'Shop'
-    }
+        context = {
+            'cart': cart_quantity,
+            'title': 'Shop'
+        }
+    
+    else:
+          context = {
+            'title': 'Shop: My Cart'
+        }
+    
 
     return render(request, "cart.html", context)
