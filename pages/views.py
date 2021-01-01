@@ -92,7 +92,7 @@ def cart_view(request):
 
         context = {
             'cart': cart_quantity,
-            'title': 'Shop'
+            'title': 'Shop: My Cart'
         }
     
     else:

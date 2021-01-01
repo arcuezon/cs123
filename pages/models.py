@@ -94,7 +94,6 @@ class Profile(models.Model):
         if created:
             Profile.objects.create(user=instance)
 
-
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
@@ -105,6 +104,8 @@ class Profile(models.Model):
 class OrderQuantity(models.Model):
     product = models.ForeignKey('Item', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=1)
+
 
     def get_quantity(self):
         return self.quantity
@@ -112,3 +113,9 @@ class OrderQuantity(models.Model):
     def increment(self):
         self.quantity += 1
         self.save()
+
+""" class Order(models.Model):
+    order_number = models.AutoField(primary_key = True)
+    order_date = models.DateTimeField(default = timezone.now)
+    status = models.CharField(max_length=10) """
+    
