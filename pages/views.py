@@ -6,24 +6,30 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from myapp.forms import SignUpForm
 import operator
-from .models import Cart, Profile, Item
+from .models import CartDetails, Profile, Item, Address, Review, Order, OrderDetails
 
-#Home page (replaced by index)
-def home_view(request, *args, **kwargs):
-    return render(request, "home.html", {})
+# Profile page
+# Require users to login to view this page. Redirect if not.
 
-#Profile page
-#Require users to login to view this page. Redirect if not.
+
 @login_required(login_url='/accounts/login/')
 def profile_view(request, *args, **kwargs):
+    address = Address.objects.get(user = request.user.profile)
+    context = {
+        "address": address,
+        "title": "Shop: My Profile"
+    }
+    return render(request, "profile.html", context)
 
-    return render(request, "profile.html",{})
+# About page
 
-#About page
+
 def about_view(request):
     return render(request, "about-us.html", {})
 
-#Home and Shop page that passes all Items to the Frontend
+# Home and Shop page that passes all Items to the Frontend
+
+
 def index(request, *args, **kwargs):
 
     if request.method == 'GET' and 'filter' in request.GET:
@@ -40,19 +46,26 @@ def index(request, *args, **kwargs):
 
     return render(request, "home.html", context)
 
-#Sign-up page
+# Sign-up page
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
-            #Adding the address inputs
-            user.profile.address_line_1 = form.cleaned_data.get('address_line_1')
-            user.profile.address_line_2 = form.cleaned_data.get('address_line_2')
-            user.profile.city = form.cleaned_data.get('city')
-            user.profile.country = form.cleaned_data.get('country')
-            user.profile.zip_code = form.cleaned_data.get('zip_code')
+            # Adding the address inputs
+            address = Address.objects.create(
+                user = user.profile,
+                address_line_1=form.cleaned_data.get('address_line_1'),
+                address_line_2=form.cleaned_data.get('address_line_2'),
+                city=form.cleaned_data.get('city'),
+                country=form.cleaned_data.get('country'),
+                zip_code=form.cleaned_data.get('zip_code'),
+            )
+            user.profile.birth_date = form.cleaned_data.get("birth_date")
+            address.save()
             user.save()
 
             raw_password = form.cleaned_data.get('password1')
@@ -64,41 +77,99 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
 @login_required(login_url='/accounts/login/')
-def add_cart(request):
-    if request.method == 'GET' and 'item' in request.GET:
-        print('Request made.')
-        item_id = request.GET['item']
-        cart, _ = Cart.objects.get_or_create(customer=request.user.profile)
-        cart.add_item(item_id)
+def add_cart(request, item_id):
 
-    else:
-        #Todo: If item-id doesn't exist
-        pass
+    item = Item.objects.get(item_id=item_id)
+    cart, cart_created = CartDetails.objects.get_or_create(
+        item=item, user=request.user)
 
-    return cart_view(request)
+    if not cart_created:
+        cart.quantity += 1
+        cart.save()
+
+
+    return redirect('/cart')
+
 
 @login_required(login_url='/accounts/login/')
 def cart_view(request):
-    if Cart.objects.filter(customer=request.user.profile).exists():
-        cart = Cart.objects.get(customer=request.user.profile)
-        cart_items = cart.ordered_items.all()
+    if CartDetails.objects.filter(user=request.user).exists():
+        cart = CartDetails.objects.filter(user=request.user)
 
+        cart_items = []
         quantity = []
-        for cart_item in cart_items:
-            quantity.append(cart.item_quantity.get(product = cart_item).quantity)
-        
-        cart_quantity = zip(cart_items, quantity)
+        subtotal = []
+        for cart_item in cart:
+            cart_items.append(cart_item.item)
+            quantity.append(cart_item.quantity)
+            subtotal.append(cart_item.item.price * cart_item.quantity)
+
+        cart_quantity = zip(cart_items, quantity, subtotal)
 
         context = {
             'cart': cart_quantity,
+            'total': sum(subtotal),
             'title': 'Shop: My Cart'
         }
-    
+
     else:
-          context = {
+        context = {
             'title': 'Shop: My Cart'
         }
-    
 
     return render(request, "cart.html", context)
+
+def item_view(request, item_id):
+    item = Item.objects.get(item_id = item_id)
+
+    if Review.objects.filter(item = item).exists():
+        pass
+
+    context ={
+        "item": item,
+        "title": item.name
+    }
+    return render(request, "item.html", context)
+
+def remove_item(request, item_id):
+    item = Item.objects.get(item_id = item_id)
+
+    cart = CartDetails.objects.get(user=request.user, item=item)
+
+    if cart.quantity == 1:
+        cart.delete()
+    else:
+        cart.quantity -= 1
+        cart.save()
+
+    return redirect('/cart')
+
+#Fix duplication because request every checkout. Better to confirm here.
+def checkout_view(request):
+    order = Order.objects.create(user = request.user.profile)
+    cart = CartDetails.objects.filter(user = request.user)
+
+    order_details = []
+    subtotals = []
+    for item_cart in cart:
+        order_item = OrderDetails.objects.create(
+            order_id = order,
+            item = item_cart.item,
+            quantity = item_cart.quantity,
+        )
+        subtotals.append(item_cart.item.price * item_cart.quantity)
+        order_details.append(order_item)
+
+    order_subtotal = zip(order_details, subtotals)
+
+    context = {
+        "order_num": order.order_id,
+        "order": order_subtotal,
+        "total": sum(subtotals),
+        "title": f"Order no: {order.order_id}",
+    }
+
+    return render(request, "checkout.html", context)
+    

@@ -1,0 +1,36 @@
+.content-container{
+    width: 96%;
+    margin: auto;
+}
+
+.checkout{
+    width: 40%;
+    margin: auto;
+}
+
+.checkout-btn{
+    background-color: #0ea700c5;
+    color: white;
+    padding: 1.5% 3%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    width: 80%;
+    margin: 0% 10%;
+}
+
+.item-container{
+    background-color: rgb(240, 240, 240);
+    width: 40%;
+    margin: 1% auto;
+    padding: 1%;
+}
+
+.subtotal{
+    color: rgb(162, 187, 19);
+}
+
+.total{
+    color: rgb(223, 53, 53);
+}

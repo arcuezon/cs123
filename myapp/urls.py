@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pages.views import home_view, profile_view, index, about_view, signup, add_cart, cart_view
+from pages.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls), #default admin site
@@ -25,5 +25,8 @@ urlpatterns = [
     path('about-us/', about_view, name='about us'), #about us page for the website
     path('signup/', signup, name='signup'), #user signup page
     path('cart/', cart_view, name='cart'),
-    path('add-to-cart/', add_cart, name='add to cart')
+    path('add-to-cart/<int:item_id>/', add_cart, name='add to cart'),
+    path('item/<int:item_id>/', item_view),
+    path('remove-item/<int:item_id>/', remove_item),
+    path('checkout/', checkout_view), 
 ]   
