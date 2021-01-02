@@ -1,0 +1,11 @@
+.order-container {
+  background-color: rgb(240, 240, 240);
+  width: 40%;
+  margin: 1% auto;
+  padding: 1%;
+}
+
+.orderid-divider {
+  border-top: 4px solid rgb(131, 131, 131);
+  border-radius: 3px;
+}

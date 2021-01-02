@@ -90,7 +90,7 @@ def add_cart(request, item_id):
         cart.save()
 
 
-    return redirect('/cart')
+    return redirect('/my-cart')
 
 
 @login_required(login_url='/accounts/login/')
@@ -125,12 +125,20 @@ def item_view(request, item_id):
     item = Item.objects.get(item_id = item_id)
 
     if Review.objects.filter(item = item).exists():
-        pass
+        reviews = Review.objects.filter(item = item)
 
-    context ={
-        "item": item,
-        "title": item.name
-    }
+        context ={
+            "item": item,
+            "reviews": reviews,
+            "title": item.name
+        }
+    
+    else:
+        context ={
+            "item": item,
+            "title": item.name
+        }
+
     return render(request, "item.html", context)
 
 def remove_item(request, item_id):
@@ -144,7 +152,7 @@ def remove_item(request, item_id):
         cart.quantity -= 1
         cart.save()
 
-    return redirect('/cart')
+    return redirect('/my-cart')
 
 #Fix duplication because request every checkout. Better to confirm here.
 def checkout_view(request):
@@ -164,6 +172,8 @@ def checkout_view(request):
 
     order_subtotal = zip(order_details, subtotals)
 
+    cart.delete()
+
     context = {
         "order_num": order.order_id,
         "order": order_subtotal,
@@ -172,4 +182,36 @@ def checkout_view(request):
     }
 
     return render(request, "checkout.html", context)
+
+def orders_view(request):
+    all_orders = Order.objects.filter(user = request.user.profile).order_by('created_date')
+
+    order_ids = []
+    order_status = []
+    order_collect = []
+    totals = []
+    for orders in all_orders:
+        order_ids.append(orders.order_id)
+        order_status.append(orders.get_status)
+        order = OrderDetails.objects.filter(order_id = orders.order_id)
+
+        single_order = []
+        total_order = 0
+        for item in order:
+            single_order.append(item)
+            total_order += int(item.get_subtotal())
+        
+        order_collect.append(single_order)
+        totals.append(total_order)
+
+
+
+    context = {
+        "orders": zip(order_ids, order_status, order_collect, totals),
+        "title": "Shop: My Orders",
+    }
+
+    print (order_ids)
+
+    return render(request, "my-orders.html", context)
     

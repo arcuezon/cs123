@@ -39,3 +39,14 @@
 .cart-btn{
     width: 100%;
 }
+
+.review-title{
+  margin-left: 2%;
+}
+
+.review-container{
+  background-color: rgb(240, 240, 240);
+  width: 96%;
+  margin: 1% auto;
+  padding: 1%;
+}

@@ -58,15 +58,6 @@ class Address(models.Model):
             self.address_type = 'A'
 
 
-
-'''
-Shopping cart that stores the users items
-'''
-class Cart(models.Model):
-    customer = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    created_date = models.DateTimeField(default = timezone.now)
-
-
 class CartDetails(models.Model):
     cart_detail_id = models.AutoField(primary_key = True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -78,6 +69,10 @@ class CartDetails(models.Model):
 
     def get_quantity(self):
         return self.quantity
+
+    def get_subtotal(self):
+        subtotal = self.item.price * self.quantity
+        return subtotal
 
 
 class Item(models.Model):
@@ -121,6 +116,9 @@ class Order(models.Model):
     status = models.CharField(max_length=10, default = 'P')
     created_date = models.DateTimeField(default = timezone.now)
 
+    def __str__(self):
+        return f"{self.user.user.username}: {str(self.created_date)[0:19]}"
+
     def get_status(self):
         if self.status == 'P':
             return 'Processing'
@@ -137,6 +135,14 @@ class OrderDetails(models.Model):
     order_id = models.ForeignKey("Order", on_delete=models.CASCADE)
     item = models.ForeignKey("Item", on_delete=models.CASCADE)
     quantity = models.SmallIntegerField(default = 1)
+
+    def __str__(self):
+        return f"Order no. {self.order_id.order_id}:  {self.item.item_id}"
+
+    def get_subtotal(self):
+        subtotal = self.item.price * self.quantity
+        return subtotal
+
 
 class Review(models.Model):
     review_id = models.AutoField(primary_key=True)
