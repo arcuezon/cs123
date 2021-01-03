@@ -15,7 +15,7 @@
 }
 
 .item-image {
-  height: 80%;
+  height: auto;
   width: auto;
   margin: auto;
   max-width: 30%

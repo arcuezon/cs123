@@ -130,7 +130,6 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR/'static_root' #probably not needed
 
-#Redirect after successful login and logout
-
+#Redirect urls after successful login and logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

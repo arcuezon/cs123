@@ -24,10 +24,12 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'), #account information
     path('about-us/', about_view, name='about us'), #about us page for the website
     path('signup/', signup, name='signup'), #user signup page
-    path('my-cart/', cart_view, name='cart'),
-    path('add-to-cart/<int:item_id>/', add_cart, name='add to cart'),
-    path('item/<int:item_id>/', item_view),
-    path('remove-item/<int:item_id>/', remove_item),
-    path('checkout/', checkout_view), 
-    path('my-orders', orders_view)
+    path('my-cart/', cart_view, name='cart'), #user cart page
+    path('add-to-cart/<int:item_id>/', add_cart, name='add to cart'), #add item to cart url
+    path('item/<int:item_id>/', item_view), #page for single item details
+    path('remove-item/<int:item_id>/', remove_item), #remove item from cart
+    path('checkout/', checkout_view),  #checkout page
+    path('my-orders', orders_view), #user orders page
+    path('review-item/<int:item_id>/', review_view), #review item page
 ]   
+

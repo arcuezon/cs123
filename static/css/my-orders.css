@@ -9,3 +9,17 @@
   border-top: 4px solid rgb(131, 131, 131);
   border-radius: 3px;
 }
+
+.review-btn {
+  background-color: rgba(199, 199, 28, 0.692);
+  color: white;
+  padding: 0.75% 1.5%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.item-img{
+  max-width: 100%;
+}
