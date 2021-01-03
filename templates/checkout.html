@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css'%}" />
+{% endblock styles %} 
+
+{% block content %}
+
+<div class="content-container">
+
+  <h2 class="order-no">Order: {{ order_num }}</h2>
+
+  {% for order_item, subtotal in order %}
+  <div class="item-container">
+    <h2>{{ order_item.item.name }}</h2>
+    <h3>P{{ order_item.item.price }}</h3>
+    <img src="{{ order_item.item.get_image }}" alt="" />
+    <div class="item-btn">
+      <p><b>Quantity:</b> <u>{{ order_item.quantity }}</u></p>
+      <h3 class="subtotal">Subtotal: {{ subtotal }}</h3>
+    </div>
+  </div>
+  {% endfor %}
+  
+  <div class="checkout">
+    <h2 class="total">Total: P{{ total }}</h2>
+    <a class="checkout-btn" href="/">Go Home</a>
+  </div>
+</div>
+
+{% endblock content %}

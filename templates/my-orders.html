@@ -1,0 +1,49 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/my-orders.css'%}" />
+{% endblock styles %} 
+
+{% block content %} 
+
+{% if orders %}
+
+<div class="content-container">
+
+{% comment %} Outer for loop to go though each order {% endcomment %}
+  {% for order_id, order_status, order, totals in orders %}
+
+  <div class="order-container">
+    <h2 class="order-id"><u>Order #: {{ order_id }}</u></h2>
+    <h3 class="order-status">Status: {{ order_status }}</h3>
+    <hr class = "orderid-divider">
+
+    {% comment %} Inner for loop to go through each item in the order {% endcomment %}
+    {% for order_detail in order %}
+      <div class="item-container">
+
+        <h3>{{ order_detail.item.name }}</h3>
+        <img class ="item-img" src="{{ order_detail.item.get_image }}" alt="" />
+
+        <div class="item-btn">
+          <p><b>Quantity:</b> <u>{{ order_detail.quantity }}</u></p>
+          <h4 class = "subtotal">Subtotal: {{ order_detail.get_subtotal }}</h4>
+          <a class="review-btn" href="/review-item/{{ order_detail.item.item_id }}">Review item</a>
+        </div>
+
+      </div>
+      <hr class = "solid-divider">
+    {% endfor %}
+
+    <h2 class = "total">Order Total: P{{ totals }}</h2>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% else %}
+<p>No items in cart</p>
+{% endif %} 
+
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/review-item.css'%}" />
+{% endblock styles %} 
+
+{% block content %} 
+
+    <div class="content-container">
+
+        {% comment %} Item details {% endcomment %}
+        <div class="price-name">
+            <h2 class="item-name">{{ item.name }}</h2>
+            <h4 class="item-price">{{ item.price }}</h4>
+        </div>
+
+        <img class="item-image" src="{{ item.get_image }}" alt="{{ item.name }}" />
+
+        <p class="item-desc">{{ item.description }}</p>
+
+        {% comment %} Review form {% endcomment %}
+        <form method="post">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+{% endblock content %}

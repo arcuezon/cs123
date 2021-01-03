@@ -40,6 +40,11 @@
   justify-content: space-between;
 }
 
+.name-link{
+  text-decoration: none;
+  color: black;
+}
+
 .item-desc {
   height: 20%;
   font-size: 15px;
@@ -49,11 +54,19 @@
   text-align: right;
 }
 
-.item-image {
+.image-link {
   height: 65%;
   width: auto;
   margin: auto;
   max-width: 90%;
+}
+
+.item-image {
+  width: auto;
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  cursor:pointer;
 }
 
 .add-cart{

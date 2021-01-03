@@ -1,0 +1,52 @@
+.content-wrapper {
+  width: 96%;
+  margin: auto;
+
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.price-name {
+  height: 10%;
+  display: flex;
+  padding: 0 35%;
+
+  justify-content: space-between;
+}
+
+.item-image {
+  height: auto;
+  width: auto;
+  margin: auto;
+  max-width: 30%
+}
+
+.add-cart{
+    width: 30%;
+    margin: auto;
+}
+
+.item-desc{
+    width: 35%;
+    margin: 1% auto;
+}
+
+.add-cart > form{
+    width:50%;
+    margin: auto;
+}
+
+.cart-btn{
+    width: 100%;
+}
+
+.review-title{
+  margin-left: 2%;
+}
+
+.review-container{
+  background-color: rgb(240, 240, 240);
+  width: 96%;
+  margin: 1% auto;
+  padding: 1%;
+}

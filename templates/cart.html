@@ -1,17 +1,39 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block styles %}
-{% endblock styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/cart.css'%}" />
+{% endblock styles %} 
 
-{% block content %}
+{% block content %} 
+
 {% if cart %}
-{% for item, number in cart %}
-<p>{{ item.name }}</p>
-<img src="{{ item.get_image }}" alt="">
-<p>Quantity: {{ number }}
-{% endfor %}
+
+<div class="content-container">
+
+  {% comment %} For loop to go though each item, 
+  item quantity, and subtotal in user's cart {% endcomment %}
+  
+  {% for item, number, subtotal in cart %}
+  <div class="item-container item-{{item.item_id}}">
+    <h2>{{ item.name }}</h2>
+    <img src="{{ item.get_image }}" alt="" />
+    <div class="item-btn">
+      <p><b>Quantity:</b> <u>{{ number }}</u></p>
+      <h3 class = "subtotal">Subtotal: {{ subtotal }}</h3>
+      <a class="remove-btn" href="/remove-item/{{ item.item_id }}">Remove item</a>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="checkout">
+    <h2 class = "total">Total: P{{ total }}</h2>
+    <a class="checkout-btn" href="/checkout">Checkout</a>
+  </div>
+</div>
+
 {% else %}
 <p>No items in cart</p>
-{% endif %}
+{% endif %} 
+
 {% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/item.css'%}" />
+{% endblock styles %} 
+
+{% block content %}
+
+<div class="content-wrapper">
+
+    <div class="price-name">
+        <h2 class="item-name">{{ item.name }}</h2>
+        <h4 class="item-price">{{ item.price }}</h4>
+    </div>
+
+    <img class="item-image" src="{{ item.get_image }}" alt="{{ item.name }}" />
+
+    <p class="item-desc">{{ item.description }}</p>
+
+    <div class="add-cart">
+      <form action="/add-to-cart/{{ item.item_id }}" method="get">
+
+        <input class = "cart-btn" type="submit" value="Add to cart">
+      </form>
+    </div>
+
+    <h2 class = "review-title">Reviews</h2>
+    {% if reviews %}
+
+      {% for review in reviews %}
+
+        <div class="review-container">
+          <h2>{{ review.rating }}/5</h2>
+          <h5> rated by {{ review.user.username }}</h5>
+          <p>{{ review.review_text }}</p>
+        </div>
+
+      {% endfor %}
+    {% else %}
+      <h4>There are no reviews for this item</h4>
+    {% endif %}
+</div>
+
+{% endblock content %}
